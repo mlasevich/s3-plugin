@@ -48,7 +48,11 @@ public class S3UploadCallable extends AbstractS3Callable implements FileCallable
             metadata.setHeader("x-amz-storage-class", storageClass);
         }
         for (MetadataPair metadataPair : userMetadata) {
-            metadata.addUserMetadata(metadataPair.key, metadataPair.value);
+            if (metadataPair.key.equalsIgnoreCase("Cache-Control")){
+                metadata.setCacheControl(metadataPair.value);
+            }else{
+                metadata.addUserMetadata(metadataPair.key, metadataPair.value);
+            }
         }
         return metadata;
     }
